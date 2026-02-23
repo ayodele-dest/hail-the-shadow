@@ -80,7 +80,7 @@ export default function App() {
         const reveals = document.querySelectorAll('[data-reveal]')
         reveals.forEach((el) => {
             const dir = el.getAttribute('data-reveal') || 'up'
-            const from: Record<string, object> = {
+            const fromVals: Record<string, object> = {
                 up: { y: 60, opacity: 0 },
                 down: { y: -40, opacity: 0 },
                 left: { x: -60, opacity: 0 },
@@ -88,8 +88,16 @@ export default function App() {
                 fade: { opacity: 0 },
                 scale: { scale: 0.9, opacity: 0 },
             }
-            gsap.from(el, {
-                ...from[dir],
+            const toVals: Record<string, object> = {
+                up: { y: 0, opacity: 1 },
+                down: { y: 0, opacity: 1 },
+                left: { x: 0, opacity: 1 },
+                right: { x: 0, opacity: 1 },
+                fade: { opacity: 1 },
+                scale: { scale: 1, opacity: 1 },
+            }
+            gsap.fromTo(el, fromVals[dir], {
+                ...toVals[dir],
                 duration: 1,
                 ease: 'power3.out',
                 scrollTrigger: {
@@ -116,46 +124,55 @@ export default function App() {
         }
 
         // Stagger faction cards
-        gsap.from('.faction-card', {
-            y: 40,
-            opacity: 0,
-            duration: 0.7,
-            ease: 'power2.out',
-            stagger: 0.12,
-            scrollTrigger: {
-                trigger: '.factions-grid',
-                start: 'top 80%',
-                once: true,
-            },
-        })
+        gsap.fromTo('.faction-card',
+            { y: 40, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.7,
+                ease: 'power2.out',
+                stagger: 0.12,
+                scrollTrigger: {
+                    trigger: '.factions-grid',
+                    start: 'top 80%',
+                    once: true,
+                },
+            }
+        )
 
         // Stagger interactive cards
-        gsap.from('.interactive-card', {
-            y: 40,
-            opacity: 0,
-            duration: 0.7,
-            ease: 'power2.out',
-            stagger: 0.15,
-            scrollTrigger: {
-                trigger: '.interactive-grid',
-                start: 'top 80%',
-                once: true,
-            },
-        })
+        gsap.fromTo('.interactive-card',
+            { y: 40, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.7,
+                ease: 'power2.out',
+                stagger: 0.15,
+                scrollTrigger: {
+                    trigger: '.interactive-grid',
+                    start: 'top 80%',
+                    once: true,
+                },
+            }
+        )
 
         // Stagger tier items
-        gsap.from('.tier', {
-            x: -30,
-            opacity: 0,
-            duration: 0.6,
-            ease: 'power2.out',
-            stagger: 0.1,
-            scrollTrigger: {
-                trigger: '.tiers',
-                start: 'top 80%',
-                once: true,
-            },
-        })
+        gsap.fromTo('.tier',
+            { x: -30, opacity: 0 },
+            {
+                x: 0,
+                opacity: 1,
+                duration: 0.6,
+                ease: 'power2.out',
+                stagger: 0.1,
+                scrollTrigger: {
+                    trigger: '.tiers',
+                    start: 'top 80%',
+                    once: true,
+                },
+            }
+        )
 
         return () => { ScrollTrigger.getAll().forEach((t) => t.kill()) }
     }, [textReady])
